@@ -37,6 +37,39 @@ FusionEKF::FusionEKF() {
    * TODO: Set the process and measurement noises
    */
 
+  //process covariance matrix Q
+  ekf_.Q_ = MatrixXd(4, 4);
+  ekf_.Q_ << 0, 0, 0, 0,
+    			   0, 0, 0, 0,
+    			   0, 0, 0, 0,
+    			   0, 0, 0, 0;
+  
+  //state covariance matrix P
+  ekf_.P_ = MatrixXd(4, 4);
+  ekf_.P_ << 1, 0, 0, 0,
+    	       0, 1, 0, 0,
+    	       0, 0, 1000, 0,
+             0, 0, 0, 1000;
+
+  //the initial transition matrix F_
+  ekf_.F_ = MatrixXd(4, 4);
+  ekf_.F_ << 1, 0, 1, 0,
+             0, 1, 0, 1,
+             0, 0, 1, 0,
+             0, 0, 0, 1;
+  
+  //measurement matrix
+  H_laser_ << 1, 0, 0, 0,
+              0, 1, 0, 0;
+
+  //set the acceleration noise components
+  noise_ax = 9;
+  noise_ay = 9;
+
+  // first measurement
+  ekf_.x_ = VectorXd(4);
+  ekf_.x_ << 1, 1, 1, 1;
+           
 
 }
 
